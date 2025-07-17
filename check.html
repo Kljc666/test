@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鲤城区创新引领产业高质量发展若干措施</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        secondary: '#3B82F6',
+                        accent: '#F59E0B',
+                        light: '#F3F4F6',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <header class="sticky top-0 z-50 bg-primary text-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-file-text-o text-2xl"></i>
+                <h1 class="text-xl md:text-2xl font-bold">政策文件解读</h1>
+            </div>
+            <div class="hidden md:block">
+                <p class="text-sm opacity-90">泉鲤政办规〔2025〕2号</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="bg-gradient-to-r from-primary to-secondary text-white py-10 md:py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-2xl md:text-4xl font-bold mb-4 text-shadow">鲤城区创新引领产业高质量发展若干措施</h2>
+                <div class="mt-8 inline-flex bg-white/20 backdrop-blur-sm rounded-lg p-3">
+                    <i class="fa fa-info-circle mr-2 text-accent"></i>
+                    <p class="text-sm">本政策旨在深入实施创新驱动发展战略，支撑引领鲤城区经济社会高质量发展</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-4 py-10">
+        <div class="mb-12">
+            <h3 class="text-xl font-bold mb-6 text-gray-800 border-b pb-2">政策核心板块</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <button class="section-btn card-hover bg-white rounded-lg shadow p-5 text-left focus:outline-none" data-section="section1">
+                    <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mb-3">
+                        <i class="fa fa-building text-primary"></i>
+                    </div>
+                    <h4 class="font-bold text-gray-800">强化企业创新主体地位</h4>
+                    <p class="text-sm text-gray-600 mt-1">5项具体措施</p>
+                </button>
+                
+                <button class="section-btn card-hover bg-white rounded-lg shadow p-5 text-left focus:outline-none" data-section="section2">
+                    <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mb-3">
+                        <i class="fa fa-globe text-primary"></i>
+                    </div>
+                    <h4 class="font-bold text-gray-800">构建异地科研创新新模式</h4>
+                    <p class="text-sm text-gray-600 mt-1">3项具体措施</p>
+                </button>
+                
+                <button class="section-btn card-hover bg-white rounded-lg shadow p-5 text-left focus:outline-none" data-section="section3">
+                    <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mb-3">
+                        <i class="fa fa-flask text-primary"></i>
+                    </div>
+                    <h4 class="font-bold text-gray-800">建设高水平科技创新平台</h4>
+                    <p class="text-sm text-gray-600 mt-1">2项具体措施</p>
+                </button>
+                
+                <button class="section-btn card-hover bg-white rounded-lg shadow p-5 text-left focus:outline-none" data-section="section4">
+                    <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mb-3">
+                        <i class="fa fa-exchange text-primary"></i>
+                    </div>
+                    <h4 class="font-bold text-gray-800">促进科技成果转移转化</h4>
+                    <p class="text-sm text-gray-600 mt-1">6项具体措施</p>
+                </button>
+            </div>
+        </div>
+
+        <div class="sections">
+            <section id="section1" class="policy-section">
+                <div class="bg-white rounded-xl shadow-md p-6 md:p-8 mb-10">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center mr-4">
+                            <i class="fa fa-building text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">一、强化企业创新主体地位</h3>
+                    </div>
+                    
+                    <div class="space-y-8">
+                        <div class="border-l-4 border-secondary pl-5 py-1">
+                            <h4 class="font-bold text-lg mb-2">（一）加强高新技术企业培育</h4>
+                            <p class="text-gray-700 mb-3">对首次通过国家高新技术企业认定的，区级财政一次性给予10万元奖励；对非首次通过国家高新技术企业认定的，区级财政一次性给予5万元奖励。</p>
+                            <div class="bg-light rounded-lg p-3 inline-flex items-center">
+                                <i class="fa fa-money text-accent mr-2"></i>
+                                <span class="font-semibold">奖励标准：首次认定10万元，非首次认定5万元</span>
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-secondary pl-5 py-1">
+                            <h4 class="font-bold text-lg mb-2">（二）加快孵化生成高新技术企业</h4>
+                            <p class="text-gray-700 mb-3">支持各类创新创业孵化基地和众创空间建设，推动孵化服务模式创新。对市级以上科技企业孵化器、众创空间每培育、引进市外1家高新技术企业的，在市级奖励基础上，区级财政给予运营单位2万元叠加奖励。</p>
+                            <div class="bg-light rounded-lg p-3 inline-flex items-center">
+                                <i class="fa fa-plus-circle text-accent mr-2"></i>
+                                <span class="font-semibold">叠加奖励：2万元/家（市级奖励基础上）</span>
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-secondary pl-5 py-1">
+                            <h4 class="font-bold text-lg mb-2">（三）加大科技型中小企业培育力度</h4>
+                            <p class="text-gray-700 mb-3">鼓励中小企业提升科技创新能力，申报科技型中小企业，充实高新技术企业培育库。</p>
+                            <div class="bg-light rounded-lg p-3 inline-flex items-center">
+                                <i class="fa fa-trophy text-accent mr-2"></i>
+                                <span class="font-semibold">奖励标准：首次入库且非高新技术企业的企业，每家0.5万元</span>
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-secondary pl-5 py-1">
+                            <h4 class="font-bold text-lg mb-2">（四）加大省级创新型中小企业培育力度</h4>
+                            <p class="text-gray-700 mb-3">提升中小企业创新能力和专业化水平，鼓励申报省级创新型中小企业，构建省级专精特新中小企业后备库。</p>
+                            <div class="bg-light rounded-lg p-3 inline-flex items-center">
+                                <i class="fa fa-trophy text-accent mr-2"></i>
+                                <span class="font-semibold">奖励标准：首次入库的省级创新型中小企业，每家0.5万元</span>
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-secondary pl-5 py-1">
+                            <h4 class="font-bold text-lg mb-2">（五）加大科技金融支持</h4>
+                            <ul class="list-disc pl-5 text-gray-700 space-y-2">
+                                <li>推荐符合条件的企业纳入泉州市创新基金"白名单"，争取研发投入融资、"科创贷"等信贷支持</li>
+                                <li>指导各类创新主体申报科技保险补贴，发挥科技保险对科技型企业的风险补偿和保障作用</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section2" class="policy-section hidden">
+                <div class="bg-white rounded-xl shadow-md p-6 md:p-8 mb-10">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center mr-4">
+                            <i class="fa fa-globe text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">二、构建异地科研创新新模式</h3>
+                    </div>
+                    
+                    <div class="space-y-8">
+                        <div class="border-l-4 border-secondary pl-5 py-1">
+                            <h4 class="font-bold text-lg mb-2">（六）支持企业建设异地研发中心</h4>
+                            <p class="text-gray-700 mb-3">支持企业到创新资源丰富的城市设立异地研发中心，高效嫁接利用先进地区、创新高地优势创新资源。</p>
+                            <div class="bg-light rounded-lg p-3 inline-flex items-center">
+                                <i class="fa fa-building-o text-accent mr-2"></i>
+                                <span class="font-semibold">补助标准：经认定的"泉州市企业异地研发中心"等，在市级补助基础上，区级再给予一次性10万元补助</span>
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-secondary pl-5 py-1">
+                            <h4 class="font-bold text-lg mb-2">（七）支持异地研发项目合作</h4>
+                            <p class="text-gray-700">支持企业通过异地校（院）地联合创新孵化中心、创新工作站与异地高校院所开展科技合作项目，推荐申报"揭榜挂帅"重大科技项目支持，申请享受泉州市科技创新券。</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-secondary pl-5 py-1">
+                            <h4 class="font-bold text-lg mb-2">（八）加大科技招商力度</h4>
+                            <p class="text-gray-700 mb-3">以"两地双园双中心"为窗口，按照"孵化+基金+园区+招商"的运营思路，全面对接异地资源，孵化更多科技企业。</p>
+                            <p class="text-gray-700">对科技招商引进的企业及生成的项目，鼓励申报高新技术企业、专精特新企业等，推荐申报各级科技计划项目，并享受相关扶持政策。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section3" class="policy-section hidden">
+                <div class="bg-white rounded-xl shadow-md p-6 md:p-8 mb-10">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center mr-4">
+                            <i class="fa fa-flask text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">三、建设高水平科技创新平台</h3>
+                    </div>
+                    
+                    <div class="space-y-8">
+                        <div class="border-l-4 border-secondary pl-5 py-1">
+                            <h4 class="font-bold text-lg mb-2">（九）支持企业创新平台建设</h4>
+                            <p class="text-gray-700 mb-4">鼓励企业成立或引进新型研发机构，建设重点实验室。</p>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-light rounded-lg overflow-hidden">
+                                    <thead class="bg-primary text-white">
+                                        <tr>
+                                            <th class="py-3 px-4 text-left">认定类型</th>
+                                            <th class="py-3 px-4 text-left">奖励标准</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="py-3 px-4">省级新型研发机构</td>
+                                            <td class="py-3 px-4 font-semibold">30万元</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4">市级新型研发机构</td>
+                                            <td class="py-3 px-4 font-semibold">10万元</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4">国家重点实验室</td>
+                                            <td class="py-3 px-4 font-semibold">50万元</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4">省级重点实验室</td>
+                                            <td class="py-3 px-4 font-semibold">30万元</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-secondary pl-5 py-1">
+                            <h4 class="font-bold text-lg mb-2">（十）推进创新创业载体建设</h4>
+                            <p class="text-gray-700 mb-4">完善科技孵化器基础设施建设，加快发展科技企业孵化器、众创空间、星创天地等创新创业孵化载体。</p>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-light rounded-lg overflow-hidden">
+                                    <thead class="bg-primary text-white">
+                                        <tr>
+                                            <th class="py-3 px-4 text-left">载体类型</th>
+                                            <th class="py-3 px-4 text-left">认定级别</th>
+                                            <th class="py-3 px-4 text-left">奖励标准</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="py-3 px-4" rowspan="3">科技企业孵化器</td>
+                                            <td class="py-3 px-4">国家级</td>
+                                            <td class="py-3 px-4 font-semibold">100万元</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4">省级</td>
+                                            <td class="py-3 px-4 font-semibold">50万元</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4">市级</td>
+                                            <td class="py-3 px-4 font-semibold">20万元</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4" rowspan="3">众创空间</td>
+                                            <td class="py-3 px-4">国家级</td>
+                                            <td class="py-3 px-4 font-semibold">50万元</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4">省级</td>
+                                            <td class="py-3 px-4 font-semibold">30万元</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4">市级</td>
+                                            <td class="py-3 px-4 font-semibold">10万元</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section4" class="policy-section hidden">
+                <div class="bg-white rounded-xl shadow-md p-6 md:p-8 mb-10">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center mr-4">
+                            <i class="fa fa-exchange text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">四、促进科技成果转移转化</h3>
+                    </div>
+                    
+                    <div class="space-y-8">
+                        <div class="border-l-4 border-secondary pl-5 py-1">
+                            <h4 class="font-bold text-lg mb-2">（十一）鼓励申报国家、省级科技奖</h4>
+                            <p class="text-gray-700 mb-4">对获得国家、省级科技奖的项目给予奖励。</p>
+                            <div class="bg-light rounded-lg p-4">
+                                <ul class="space-y-2">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-medal text-accent mt-1 mr-2"></i>
+                                        <div>
+                                            <span class="font-semibold">第一完成单位：</span>
+                                            <span>国家、省级相应奖金的等额奖励（最高不超过30万元）</span>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-medal text-accent mt-1 mr-2"></i>
+                                        <div>
+                                            <span class="font-semibold">第二完成单位：</span>
+                                            <span>国家、省级相应奖金的1/2奖励（最高不超过30万元）</span>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-medal text-accent mt-1 mr-2"></i>
+                                        <div>
+                                            <span class="font-semibold">第三完成单位：</span>
+                                            <span>国家、省级相应奖金的1/3奖励（最高不超过30万元）</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-secondary pl-5 py-1">
+                            <h4 class="font-bold text-lg mb-2">（十二）支持专业机构开展科技服务</h4>
+                            <p class="text-gray-700 mb-3">鼓励专业机构在我区开展精准培训、辅导，加快推进技术转移体系建设。</p>
+                            <div class="bg-light rounded-lg p-3">
+                                <p class="mb-2"><span class="font-semibold">国家级技术转移机构、技术先进型服务企业：</span>20万元奖励</p>
+                                <p><span class="font-semibold">省级技术转移机构、技术先进型服务企业：</span>10万元奖励</p>
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-secondary pl-5 py-1">
+                            <h4 class="font-bold text-lg mb-2">（十三）加快引进人才团队</h4>
+                            <p class="text-gray-700 mb-3">实施"人才+团队+项目"的精准引才模式，面向国内外引进高层次人才团队。</p>
+                            <div class="bg-light rounded-lg p-3 inline-flex items-center">
+                                <i class="fa fa-users text-accent mr-2"></i>
+                                <span class="font-semibold">奖励标准：入选泉州市引进高层次人才团队的单位，给予20万元奖励</span>
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-secondary pl-5 py-1">
+                            <h4 class="font-bold text-lg mb-2">（十四）强化平台与企业供需对接</h4>
+                            <ul class="list-disc pl-5 text-gray-700 space-y-2">
+                                <li>搭建科研院所与企业信息交流平台，发挥东部转移泉州分中心等机构作用</li>
+                                <li>引导规上企业、高新技术企业提炼技术需求，深化产学研合作</li>
+                                <li>借助东部转移中心InnoMatch（全球供需对接）平台，对科技型企业进行诊断，对接银行、投资机构等提供科技金融服务</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="border-l-4 border-secondary pl-5 py-1">
+                            <h4 class="font-bold text-lg mb-2">（十五）支持创新创业项目</h4>
+                            <p class="text-gray-700 mb-3">鼓励企业参与科技创新及成果转移转化。</p>
+                            <div class="bg-light rounded-lg p-3 inline-flex items-center">
+                                <i class="fa fa-trophy text-accent mr-2"></i>
+                                <span class="font-semibold">奖励标准：获得市级以上科技类创新创业大赛奖项的企业，按市级奖励金额的30%给予配套奖励</span>
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-secondary pl-5 py-1">
+                            <h4 class="font-bold text-lg mb-2">（十六）落实科技特派员认定扶持奖励</h4>
+                            <p class="text-gray-700 mb-4">对认定的科技特派员给予扶持奖励。</p>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-light rounded-lg overflow-hidden">
+                                    <thead class="bg-primary text-white">
+                                        <tr>
+                                            <th class="py-3 px-4 text-left">认定类型</th>
+                                            <th class="py-3 px-4 text-left">级别</th>
+                                            <th class="py-3 px-4 text-left">奖励标准</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="py-3 px-4" rowspan="2">个人科技特派员</td>
+                                            <td class="py-3 px-4">省级</td>
+                                            <td class="py-3 px-4 font-semibold">1万元</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4">市级</td>
+                                            <td class="py-3 px-4 font-semibold">0.5万元</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4" rowspan="2">法人（团队）科技特派员</td>
+                                            <td class="py-3 px-4">省级</td>
+                                            <td class="py-3 px-4 font-semibold">2万元</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4">市级</td>
+                                            <td class="py-3 px-4 font-semibold">1万元</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4">科技特派员工作站</td>
+                                            <td class="py-3 px-4">市级</td>
+                                            <td class="py-3 px-4 font-semibold">1万元（奖励服务单位）</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                    <div class="mb-4 md:mb-0">
+                        <h4 class="font-bold text-lg mb-1">鲤城区人民政府办公室</h4>
+                        <p class="text-gray-400 text-sm">政策文号：泉鲤政办规〔2025〕2号</p>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fa fa-phone"></i> 联系我们
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fa fa-file-text"></i> 政策原文
+                        </a>
+                    </div>
+                </div>
+                <div class="border-t border-gray-700 pt-6 text-center text-gray-400 text-sm">
+                    <p>© 2025 泉州市鲤城区人民政府办公室 版权所有</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sectionBtns = document.querySelectorAll('.section-btn');
+            const policySections = document.querySelectorAll('.policy-section');
+            
+            sectionBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetSection = this.getAttribute('data-section');
+                    
+                    policySections.forEach(section => {
+                        section.classList.add('hidden');
+                    });
+                    
+                    document.getElementById(targetSection).classList.remove('hidden');
+                    
+                    document.getElementById(targetSection).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    
+                    sectionBtns.forEach(b => {
+                        b.classList.remove('ring-2', 'ring-primary', 'bg-primary/5');
+                    });
+                    this.classList.add('ring-2', 'ring-primary', 'bg-primary/5');
+                });
+            });
+            
+            document.getElementById('section1').classList.remove('hidden');
+            sectionBtns[0].classList.add('ring-2', 'ring-primary', 'bg-primary/5');
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId !== '#') {
+                        document.querySelector(targetId).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
