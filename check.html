@@ -11,14 +11,14 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#2563EB',
-                        secondary: '#3B82F6',
-                        accent: '#F97316',
-                        light: '#F8FAFC',
-                        dark: '#1E293B'
+                        primary: '#165DFF',
+                        secondary: '#4080FF',
+                        accent: '#FF7D00',
+                        light: '#F5F7FA',
+                        dark: '#1D2129'
                     },
                     fontFamily: {
-                        sans: ['PingFang SC', 'Helvetica Neue', 'Arial', 'sans-serif']
+                        sans: ['PingFang SC', 'Microsoft YaHei', 'sans-serif']
                     }
                 }
             }
@@ -26,138 +26,199 @@
     </script>
     <style type="text/tailwindcss">
         @layer utilities {
-            .page-full {
-                min-height: 100vh;
-                scroll-snap-align: start;
+            .page {
+                height: 100vh;
+                overflow: hidden;
+                position: relative;
             }
             .progress-dot {
-                width: 8px;
-                height: 8px;
+                width: 6px;
+                height: 6px;
                 border-radius: 50%;
-                transition: all 0.3s ease;
+                background-color: rgba(255,255,255,0.4);
+                transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             }
             .progress-dot.active {
                 width: 24px;
-                border-radius: 4px;
+                border-radius: 3px;
+                background-color: #fff;
             }
-            .slide-up {
-                animation: slideUp 0.6s ease forwards;
+            .animate-fade-in {
+                animation: fadeIn 0.8s ease forwards;
                 opacity: 0;
             }
+            .animate-slide-up {
+                animation: slideUp 0.8s ease forwards;
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            .animate-scale {
+                animation: scale 0.6s ease forwards;
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            @keyframes fadeIn {
+                to { opacity: 1; }
+            }
             @keyframes slideUp {
-                from {
-                    transform: translateY(30px);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateY(0);
+                to { 
                     opacity: 1;
+                    transform: translateY(0);
                 }
             }
-            .delay-100 { animation-delay: 0.1s; }
-            .delay-200 { animation-delay: 0.2s; }
-            .delay-300 { animation-delay: 0.3s; }
+            @keyframes scale {
+                to { 
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #165DFF 0%, #4080FF 100%);
+            }
+            .text-shadow {
+                text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            .mask-bottom {
+                mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+                -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+            }
         }
     </style>
 </head>
-<body class="bg-light text-dark overflow-x-hidden">
-    <!-- 进度指示器 -->
-    <div class="fixed top-6 left-0 right-0 flex justify-center z-50">
-        <div class="flex space-x-2">
-            <div class="progress-dot bg-primary active" data-page="1"></div>
-            <div class="progress-dot bg-gray-300" data-page="2"></div>
-            <div class="progress-dot bg-gray-300" data-page="3"></div>
-            <div class="progress-dot bg-gray-300" data-page="4"></div>
-            <div class="progress-dot bg-gray-300" data-page="5"></div>
+<body class="bg-light text-dark overflow: hidden;">
+    <!-- 导航进度 -->
+    <div class="fixed top-8 left-0 right-0 flex justify-center z-50 pointer-events-none">
+        <div class="flex items-center gap-2">
+            <div class="progress-dot active" data-index="0"></div>
+            <div class="progress-dot" data-index="1"></div>
+            <div class="progress-dot" data-index="2"></div>
+            <div class="progress-dot" data-index="3"></div>
+            <div class="progress-dot" data-index="4"></div>
         </div>
     </div>
 
-    <!-- 翻页按钮 -->
-    <button id="prevBtn" class="fixed left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 shadow-md flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity">
-        <i class="fa fa-angle-left text-primary text-xl"></i>
-    </button>
-    <button id="nextBtn" class="fixed right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 shadow-md flex items-center justify-center z-50 transition-opacity">
-        <i class="fa fa-angle-right text-primary text-xl"></i>
-    </button>
+    <!-- 翻页控制 -->
+    <div class="fixed left-6 top-1/2 -translate-y-1/2 z-50">
+        <button id="prevBtn" class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white shadow-lg hover:bg-white/20 transition-all opacity-0 pointer-events-none">
+            <i class="fa fa-angle-left text-xl"></i>
+        </button>
+    </div>
+    <div class="fixed right-6 top-1/2 -translate-y-1/2 z-50">
+        <button id="nextBtn" class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white shadow-lg hover:bg-white/20 transition-all">
+            <i class="fa fa-angle-right text-xl"></i>
+        </button>
+    </div>
 
-    <!-- 页面容器 -->
-    <div id="pagesContainer" class="transition-transform duration-500 ease-out">
+    <!-- 滑动容器 -->
+    <div id="scrollContainer" class="transition-transform duration-800 ease-in-out">
         <!-- 封面页 -->
-        <div class="page-full flex flex-col items-center justify-center bg-gradient-to-b from-primary to-secondary p-6 text-white">
-            <div class="slide-up text-center max-w-lg">
-                <h1 class="text-3xl md:text-5xl font-bold mb-6 leading-tight">鲤城区创新引领产业高质量发展若干措施</h1>
-                <div class="w-20 h-1 bg-white/50 mx-auto my-8"></div>
-                <p class="text-lg md:text-xl opacity-90 mb-10">深入实施创新驱动发展战略</p>
-                <div class="animate-bounce">
+        <div class="page bg-gradient-primary flex flex-col items-center justify-center p-6 text-white">
+            <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10">
+                <div class="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-white blur-3xl"></div>
+                <div class="absolute bottom-1/3 right-1/3 w-80 h-80 rounded-full bg-white blur-3xl"></div>
+            </div>
+            
+            <div class="relative z-10 max-w-2xl text-center">
+                <div class="animate-fade-in mb-6">
+                    <span class="inline-block px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium">政策解读</span>
+                </div>
+                <h1 class="animate-slide-up text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight mb-6 delay-100">
+                    鲤城区创新引领产业<br class="md:hidden">高质量发展若干措施
+                </h1>
+                <div class="w-20 h-1 bg-white/50 mx-auto my-8 animate-slide-up delay-200"></div>
+                <p class="animate-slide-up text-[clamp(1rem,2vw,1.25rem)] opacity-90 mb-12 delay-300">
+                    聚焦创新驱动，赋能产业升级
+                </p>
+                <div class="animate-bounce absolute bottom-12 left-1/2 -translate-x-1/2">
                     <i class="fa fa-angle-down text-2xl"></i>
                 </div>
             </div>
         </div>
 
-        <!-- 页面1：强化企业创新主体地位 -->
-        <div class="page-full bg-white p-8 md:p-12">
-            <div class="max-w-4xl mx-auto h-full flex flex-col">
-                <div class="slide-up">
-                    <span class="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6">第一部分</span>
-                    <h2 class="text-2xl md:text-3xl font-bold mb-8 text-primary">强化企业创新主体地位</h2>
+        <!-- 第一部分：强化企业创新主体地位 -->
+        <div class="page bg-white p-6 md:p-12">
+            <div class="max-w-5xl mx-auto h-full flex flex-col">
+                <div class="mb-10">
+                    <span class="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6 animate-fade-in">第一部分</span>
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-3 animate-slide-up">强化企业创新主体地位</h2>
+                    <div class="w-16 h-1 bg-primary animate-slide-up delay-100"></div>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow slide-up delay-100">
-                    <div class="bg-light rounded-xl p-6 shadow-sm border border-gray-100">
-                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                            <i class="fa fa-rocket text-primary text-xl"></i>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
+                    <!-- 卡片1 -->
+                    <div class="bg-light rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all animate-scale delay-100">
+                        <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5">
+                            <i class="fa fa-rocket text-primary text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold mb-3">高新技术企业培育</h3>
-                        <ul class="space-y-2 text-gray-700">
+                        <h3 class="text-xl font-semibold mb-4 text-dark">高新技术企业培育</h3>
+                        <ul class="space-y-3 text-gray-700">
                             <li class="flex items-start">
-                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
-                                <span>首次通过认定：一次性10万元</span>
+                                <i class="fa fa-check-circle text-accent mt-1 mr-3 text-lg"></i>
+                                <div>
+                                    <span class="font-medium">首次通过认定：</span>
+                                    <span>区级财政一次性奖励10万元</span>
+                                </div>
                             </li>
                             <li class="flex items-start">
-                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
-                                <span>非首次通过认定：一次性5万元</span>
+                                <i class="fa fa-check-circle text-accent mt-1 mr-3 text-lg"></i>
+                                <div>
+                                    <span class="font-medium">非首次通过认定：</span>
+                                    <span>区级财政一次性奖励5万元</span>
+                                </div>
                             </li>
                         </ul>
                     </div>
-                    
-                    <div class="bg-light rounded-xl p-6 shadow-sm border border-gray-100">
-                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                            <i class="fa fa-cubes text-primary text-xl"></i>
+
+                    <!-- 卡片2 -->
+                    <div class="bg-light rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all animate-scale delay-200">
+                        <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5">
+                            <i class="fa fa-cubes text-primary text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold mb-3">科技型企业培育</h3>
-                        <ul class="space-y-2 text-gray-700">
+                        <h3 class="text-xl font-semibold mb-4 text-dark">科技型企业培育</h3>
+                        <ul class="space-y-3 text-gray-700">
                             <li class="flex items-start">
-                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
-                                <span>首次入库科技型中小企业：0.5万元/家</span>
+                                <i class="fa fa-check-circle text-accent mt-1 mr-3 text-lg"></i>
+                                <div>
+                                    <span class="font-medium">首次入库科技型中小企业：</span>
+                                    <span>每家奖励0.5万元</span>
+                                </div>
                             </li>
                             <li class="flex items-start">
-                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
-                                <span>首次入库省级创新型中小企业：0.5万元/家</span>
+                                <i class="fa fa-check-circle text-accent mt-1 mr-3 text-lg"></i>
+                                <div>
+                                    <span class="font-medium">首次入库省级创新型中小企业：</span>
+                                    <span>每家奖励0.5万元</span>
+                                </div>
                             </li>
                         </ul>
                     </div>
-                    
-                    <div class="bg-light rounded-xl p-6 shadow-sm border border-gray-100">
-                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                            <i class="fa fa-handshake-o text-primary text-xl"></i>
+
+                    <!-- 卡片3 -->
+                    <div class="bg-light rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all animate-scale delay-300">
+                        <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5">
+                            <i class="fa fa-handshake-o text-primary text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold mb-3">孵化载体奖励</h3>
-                        <p class="text-gray-700">市级以上科技企业孵化器、众创空间每培育/引进1家市外高新技术企业，在市级奖励基础上叠加2万元/家。</p>
+                        <h3 class="text-xl font-semibold mb-4 text-dark">孵化载体奖励</h3>
+                        <p class="text-gray-700 mb-4">对市级以上科技企业孵化器、众创空间，每培育或引进1家市外高新技术企业：</p>
+                        <div class="px-4 py-2 bg-accent/10 text-accent rounded-lg inline-block font-medium">
+                            在市级奖励基础上，区级叠加2万元/家奖励
+                        </div>
                     </div>
-                    
-                    <div class="bg-light rounded-xl p-6 shadow-sm border border-gray-100">
-                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                            <i class="fa fa-money text-primary text-xl"></i>
+
+                    <!-- 卡片4 -->
+                    <div class="bg-light rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all animate-scale delay-400">
+                        <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5">
+                            <i class="fa fa-money text-primary text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold mb-3">科技金融支持</h3>
-                        <ul class="space-y-2 text-gray-700">
+                        <h3 class="text-xl font-semibold mb-4 text-dark">科技金融支持</h3>
+                        <ul class="space-y-3 text-gray-700">
                             <li class="flex items-start">
-                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
-                                <span>纳入创新基金"白名单"，享受信贷支持</span>
+                                <i class="fa fa-check-circle text-accent mt-1 mr-3 text-lg"></i>
+                                <span>纳入泉州市创新基金"白名单"，享受研发投入融资、"科创贷"等信贷支持</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
-                                <span>申报科技保险补贴</span>
+                                <i class="fa fa-check-circle text-accent mt-1 mr-3 text-lg"></i>
+                                <span>指导申报科技保险补贴，降低企业创新风险</span>
                             </li>
                         </ul>
                     </div>
@@ -165,268 +226,335 @@
             </div>
         </div>
 
-        <!-- 页面2：构建异地科研创新新模式 -->
-        <div class="page-full bg-gray-50 p-8 md:p-12">
-            <div class="max-w-4xl mx-auto h-full flex flex-col">
-                <div class="slide-up">
-                    <span class="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6">第二部分</span>
-                    <h2 class="text-2xl md:text-3xl font-bold mb-8 text-primary">构建异地科研创新新模式</h2>
+        <!-- 第二部分：构建异地科研创新新模式 -->
+        <div class="page bg-light p-6 md:p-12">
+            <div class="max-w-5xl mx-auto h-full flex flex-col">
+                <div class="mb-10">
+                    <span class="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6 animate-fade-in">第二部分</span>
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-3 animate-slide-up">构建异地科研创新新模式</h2>
+                    <div class="w-16 h-1 bg-primary animate-slide-up delay-100"></div>
                 </div>
                 
-                <div class="flex-grow slide-up delay-100">
-                    <div class="bg-white rounded-xl p-8 shadow-md mb-8">
+                <div class="flex-grow space-y-8">
+                    <!-- 主卡片 -->
+                    <div class="bg-white rounded-2xl p-6 md:p-8 shadow-md animate-scale">
                         <div class="flex flex-col md:flex-row gap-8">
-                            <div class="md:w-1/3">
-                                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                            <div class="md:w-1/4 flex flex-col items-center md:items-start">
+                                <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6">
                                     <i class="fa fa-building text-primary text-2xl"></i>
                                 </div>
-                                <h3 class="text-xl font-semibold mb-3">异地研发中心建设</h3>
+                                <h3 class="text-xl font-semibold mb-2 text-dark text-center md:text-left">异地研发中心建设</h3>
+                                <div class="w-12 h-1 bg-primary/30 rounded-full"></div>
                             </div>
-                            <div class="md:w-2/3">
-                                <p class="text-gray-700 mb-4">支持企业到创新资源丰富城市设立异地研发中心，高效利用先进地区创新资源。</p>
-                                <div class="inline-block px-3 py-1 bg-accent/10 text-accent rounded text-sm font-semibold">经认定后，市级补助基础上再给予10万元一次性补助</div>
+                            <div class="md:w-3/4">
+                                <p class="text-gray-700 mb-6">支持企业根据发展需求，到创新资源丰富的城市设立异地研发中心，高效嫁接先进地区创新资源，强化产业科技创新成果供给。</p>
+                                <div class="bg-primary/5 border-l-4 border-primary p-4 rounded-r-lg">
+                                    <p class="font-medium text-dark">补助标准：</p>
+                                    <p class="text-primary font-semibold mt-1">对经认定的"泉州市企业异地研发中心""异地创新工作站""园区飞地孵化基地"，在市级财政补助基础上，区级再给予一次性10万元补助</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
+                    <!-- 双卡片 -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-white rounded-xl p-6 shadow-md">
-                            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                                <i class="fa fa-puzzle-piece text-primary text-xl"></i>
+                        <div class="bg-white rounded-2xl p-6 md:p-8 shadow-md animate-scale delay-200">
+                            <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5">
+                                <i class="fa fa-puzzle-piece text-primary text-2xl"></i>
                             </div>
-                            <h3 class="text-xl font-semibold mb-3">异地研发项目合作</h3>
-                            <ul class="space-y-2 text-gray-700">
-                                <li class="flex items-start">
-                                    <i class="fa fa-arrow-right text-primary mt-1 mr-2"></i>
-                                    <span>与异地高校院所开展科技合作</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <i class="fa fa-arrow-right text-primary mt-1 mr-2"></i>
-                                    <span>推荐申报"揭榜挂帅"项目</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <i class="fa fa-arrow-right text-primary mt-1 mr-2"></i>
-                                    <span>享受泉州市科技创新券</span>
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <div class="bg-white rounded-xl p-6 shadow-md">
-                            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                                <i class="fa fa-line-chart text-primary text-xl"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold mb-3">科技招商力度</h3>
-                            <p class="text-gray-700 mb-3">以"两地双园双中心"为窗口，按照"孵化+基金+园区+招商"思路，对接异地资源。</p>
-                            <p class="text-gray-700">优质企业可享受高新技术企业、专精特新企业等相关扶持政策。</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 页面3：建设高水平科技创新平台 -->
-        <div class="page-full bg-white p-8 md:p-12">
-            <div class="max-w-4xl mx-auto h-full flex flex-col">
-                <div class="slide-up">
-                    <span class="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6">第三部分</span>
-                    <h2 class="text-2xl md:text-3xl font-bold mb-8 text-primary">建设高水平科技创新平台</h2>
-                </div>
-                
-                <div class="slide-up delay-100 flex-grow">
-                    <div class="overflow-x-auto mb-8">
-                        <table class="min-w-full bg-light rounded-xl overflow-hidden">
-                            <thead class="bg-primary text-white">
-                                <tr>
-                                    <th class="py-4 px-6 text-left text-lg">创新平台类型</th>
-                                    <th class="py-4 px-6 text-left text-lg">认定级别</th>
-                                    <th class="py-4 px-6 text-left text-lg">奖励标准</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                <tr>
-                                    <td class="py-4 px-6" rowspan="2">新型研发机构</td>
-                                    <td class="py-4 px-6">省级</td>
-                                    <td class="py-4 px-6 font-semibold">30万元</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-4 px-6">市级</td>
-                                    <td class="py-4 px-6 font-semibold">10万元</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-4 px-6" rowspan="2">重点实验室</td>
-                                    <td class="py-4 px-6">国家级</td>
-                                    <td class="py-4 px-6 font-semibold">50万元</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-4 px-6">省级</td>
-                                    <td class="py-4 px-6 font-semibold">30万元</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <h3 class="text-xl font-semibold mb-4 text-gray-800">创新创业载体建设</h3>
-                    <div class="bg-light rounded-xl p-6 mb-6">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <h4 class="font-medium text-primary mb-2">科技企业孵化器</h4>
-                                <ul class="text-gray-700 text-sm space-y-1">
-                                    <li>国家级：100万元</li>
-                                    <li>省级：50万元</li>
-                                    <li>市级：20万元</li>
-                                </ul>
-                            </div>
-                            <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <h4 class="font-medium text-primary mb-2">众创空间</h4>
-                                <ul class="text-gray-700 text-sm space-y-1">
-                                    <li>国家级：50万元</li>
-                                    <li>省级：30万元</li>
-                                    <li>市级：10万元</li>
-                                </ul>
-                            </div>
-                            <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <h4 class="font-medium text-primary mb-2">政策适用</h4>
-                                <p class="text-gray-700 text-sm">2024年以来新认定的创新创业载体</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 页面4：促进科技成果转移转化 -->
-        <div class="page-full bg-gray-50 p-8 md:p-12">
-            <div class="max-w-4xl mx-auto h-full flex flex-col">
-                <div class="slide-up">
-                    <span class="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6">第四部分</span>
-                    <h2 class="text-2xl md:text-3xl font-bold mb-8 text-primary">促进科技成果转移转化</h2>
-                </div>
-                
-                <div class="flex-grow grid grid-cols-1 md:grid-cols-2 gap-8 slide-up delay-100">
-                    <div>
-                        <div class="bg-white rounded-xl p-6 shadow-md mb-6">
-                            <h3 class="text-xl font-semibold mb-4 flex items-center">
-                                <i class="fa fa-trophy text-accent mr-3"></i>
-                                科技奖励申报
-                            </h3>
+                            <h3 class="text-xl font-semibold mb-4 text-dark">异地研发项目合作</h3>
                             <ul class="space-y-3 text-gray-700">
-                                <li class="border-l-2 border-primary pl-3 py-1">
-                                    <span class="font-medium">第一完成单位：</span>
-                                    <span>国家、省级相应奖金等额奖励（最高30万元）</span>
+                                <li class="flex items-start">
+                                    <i class="fa fa-angle-right text-primary mt-1 mr-3"></i>
+                                    <span>支持与异地高校院所开展科技合作项目</span>
                                 </li>
-                                <li class="border-l-2 border-primary/70 pl-3 py-1">
-                                    <span class="font-medium">第二完成单位：</span>
-                                    <span>国家、省级相应奖金1/2奖励（最高30万元）</span>
+                                <li class="flex items-start">
+                                    <i class="fa fa-angle-right text-primary mt-1 mr-3"></i>
+                                    <span>推荐申报"揭榜挂帅"重大科技项目</span>
                                 </li>
-                                <li class="border-l-2 border-primary/50 pl-3 py-1">
-                                    <span class="font-medium">第三完成单位：</span>
-                                    <span>国家、省级相应奖金1/3奖励（最高30万元）</span>
+                                <li class="flex items-start">
+                                    <i class="fa fa-angle-right text-primary mt-1 mr-3"></i>
+                                    <span>申请享受泉州市科技创新券政策</span>
                                 </li>
                             </ul>
                         </div>
                         
-                        <div class="bg-white rounded-xl p-6 shadow-md">
-                            <h3 class="text-xl font-semibold mb-4 flex items-center">
-                                <i class="fa fa-users text-primary mr-3"></i>
-                                人才团队引进
-                            </h3>
-                            <p class="text-gray-700 mb-3">实施"人才+团队+项目"精准引才模式，面向国内外引进高层次人才团队。</p>
-                            <div class="px-3 py-2 bg-primary/10 rounded text-primary font-semibold">入选泉州市引进高层次人才团队的单位，给予20万元奖励</div>
+                        <div class="bg-white rounded-2xl p-6 md:p-8 shadow-md animate-scale delay-300">
+                            <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5">
+                                <i class="fa fa-line-chart text-primary text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-4 text-dark">科技招商力度</h3>
+                            <p class="text-gray-700 mb-4">以"两地双园双中心"为窗口，按照"孵化+基金+园区+招商"运营思路，全面对接异地资源。</p>
+                            <p class="text-gray-700">引进企业可申报高新技术企业、专精特新企业等，享受相关扶持政策及科技计划项目推荐。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第三部分：建设高水平科技创新平台 -->
+        <div class="page bg-white p-6 md:p-12">
+            <div class="max-w-5xl mx-auto h-full flex flex-col">
+                <div class="mb-10">
+                    <span class="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6 animate-fade-in">第三部分</span>
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-3 animate-slide-up">建设高水平科技创新平台</h2>
+                    <div class="w-16 h-1 bg-primary animate-slide-up delay-100"></div>
+                </div>
+                
+                <div class="flex-grow space-y-8">
+                    <!-- 创新平台表格 -->
+                    <div class="bg-light rounded-2xl overflow-hidden shadow-sm animate-scale">
+                        <div class="p-6 border-b border-gray-200">
+                            <h3 class="text-xl font-semibold text-dark">企业创新平台建设奖励</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="bg-primary text-white text-left">
+                                        <th class="py-4 px-6 font-semibold">平台类型</th>
+                                        <th class="py-4 px-6 font-semibold">认定级别</th>
+                                        <th class="py-4 px-6 font-semibold">奖励标准</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <tr class="bg-white">
+                                        <td class="py-4 px-6" rowspan="2">新型研发机构</td>
+                                        <td class="py-4 px-6">省级</td>
+                                        <td class="py-4 px-6 font-semibold text-accent">30万元</td>
+                                    </tr>
+                                    <tr class="bg-white">
+                                        <td class="py-4 px-6">市级</td>
+                                        <td class="py-4 px-6 font-semibold text-accent">10万元</td>
+                                    </tr>
+                                    <tr class="bg-white">
+                                        <td class="py-4 px-6" rowspan="2">重点实验室</td>
+                                        <td class="py-4 px-6">国家级</td>
+                                        <td class="py-4 px-6 font-semibold text-accent">50万元</td>
+                                    </tr>
+                                    <tr class="bg-white">
+                                        <td class="py-4 px-6">省级</td>
+                                        <td class="py-4 px-6 font-semibold text-accent">30万元</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     
+                    <!-- 创新创业载体 -->
                     <div>
-                        <div class="bg-white rounded-xl p-6 shadow-md mb-6">
-                            <h3 class="text-xl font-semibold mb-4 flex items-center">
-                                <i class="fa fa-random text-primary mr-3"></i>
-                                科技特派员奖励
-                            </h3>
+                        <h3 class="text-xl font-semibold text-dark mb-6 animate-slide-up">创新创业载体建设</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-light rounded-2xl p-6 shadow-sm border border-gray-100 animate-scale delay-100">
+                                <div class="mb-4 flex items-center">
+                                    <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-3">
+                                        <i class="fa fa-building-o text-primary"></i>
+                                    </div>
+                                    <h4 class="font-semibold text-dark">科技企业孵化器</h4>
+                                </div>
+                                <ul class="space-y-2 text-gray-700 pl-1">
+                                    <li class="flex justify-between">
+                                        <span>国家级</span>
+                                        <span class="font-semibold">100万元</span>
+                                    </li>
+                                    <li class="flex justify-between">
+                                        <span>省级</span>
+                                        <span class="font-semibold">50万元</span>
+                                    </li>
+                                    <li class="flex justify-between">
+                                        <span>市级</span>
+                                        <span class="font-semibold">20万元</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-light rounded-2xl p-6 shadow-sm border border-gray-100 animate-scale delay-200">
+                                <div class="mb-4 flex items-center">
+                                    <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-3">
+                                        <i class="fa fa-users text-primary"></i>
+                                    </div>
+                                    <h4 class="font-semibold text-dark">众创空间</h4>
+                                </div>
+                                <ul class="space-y-2 text-gray-700 pl-1">
+                                    <li class="flex justify-between">
+                                        <span>国家级</span>
+                                        <span class="font-semibold">50万元</span>
+                                    </li>
+                                    <li class="flex justify-between">
+                                        <span>省级</span>
+                                        <span class="font-semibold">30万元</span>
+                                    </li>
+                                    <li class="flex justify-between">
+                                        <span>市级</span>
+                                        <span class="font-semibold">10万元</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-primary/5 rounded-2xl p-6 border border-primary/20 animate-scale delay-300">
+                                <h4 class="font-semibold text-dark mb-4">政策适用范围</h4>
+                                <p class="text-gray-700 mb-3">2024年以来新认定的各类创新创业载体，包括：</p>
+                                <ul class="space-y-1 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                        <span>科技企业孵化器</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                        <span>众创空间</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                        <span>星创天地等孵化载体</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第四部分：促进科技成果转移转化 -->
+        <div class="page bg-light p-6 md:p-12">
+            <div class="max-w-5xl mx-auto h-full flex flex-col">
+                <div class="mb-10">
+                    <span class="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6 animate-fade-in">第四部分</span>
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-3 animate-slide-up">促进科技成果转移转化</h2>
+                    <div class="w-16 h-1 bg-primary animate-slide-up delay-100"></div>
+                </div>
+                
+                <div class="flex-grow grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- 左侧内容 -->
+                    <div class="space-y-8">
+                        <!-- 科技奖励 -->
+                        <div class="bg-white rounded-2xl p-6 md:p-8 shadow-md animate-scale">
+                            <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5">
+                                <i class="fa fa-trophy text-primary text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-5 text-dark">科技奖励申报</h3>
+                            <div class="space-y-4">
+                                <div class="border-l-4 border-primary pl-4 py-1">
+                                    <p class="font-medium text-dark">第一完成单位</p>
+                                    <p class="text-gray-700">国家、省级相应奖金的等额奖励（最高不超过30万元）</p>
+                                </div>
+                                <div class="border-l-4 border-primary/70 pl-4 py-1">
+                                    <p class="font-medium text-dark">第二完成单位</p>
+                                    <p class="text-gray-700">国家、省级相应奖金的1/2奖励（最高不超过30万元）</p>
+                                </div>
+                                <div class="border-l-4 border-primary/50 pl-4 py-1">
+                                    <p class="font-medium text-dark">第三完成单位</p>
+                                    <p class="text-gray-700">国家、省级相应奖金的1/3奖励（最高不超过30万元）</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 人才团队 -->
+                        <div class="bg-white rounded-2xl p-6 md:p-8 shadow-md animate-scale delay-200">
+                            <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5">
+                                <i class="fa fa-users text-primary text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-4 text-dark">人才团队引进</h3>
+                            <p class="text-gray-700 mb-5">实施"人才+团队+项目"精准引才模式，面向国内外引进高层次人才团队，助力产业创新发展。</p>
+                            <div class="px-4 py-3 bg-accent/10 text-accent rounded-lg inline-block font-semibold">
+                                入选泉州市引进高层次人才团队的单位，给予20万元奖励
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧内容 -->
+                    <div class="space-y-8">
+                        <!-- 科技特派员 -->
+                        <div class="bg-white rounded-2xl p-6 md:p-8 shadow-md animate-scale delay-300">
+                            <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5">
+                                <i class="fa fa-user-o text-primary text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-5 text-dark">科技特派员奖励</h3>
                             <div class="overflow-x-auto">
-                                <table class="min-w-full text-sm">
+                                <table class="w-full text-sm">
                                     <thead>
-                                        <tr class="border-b">
-                                            <th class="py-2 px-3 text-left">类型</th>
-                                            <th class="py-2 px-3 text-left">级别</th>
-                                            <th class="py-2 px-3 text-left">奖励</th>
+                                        <tr class="border-b border-gray-200">
+                                            <th class="py-3 px-4 text-left font-medium">类型</th>
+                                            <th class="py-3 px-4 text-left font-medium">级别</th>
+                                            <th class="py-3 px-4 text-left font-medium">奖励标准</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr class="border-b">
-                                            <td class="py-2 px-3">个人</td>
-                                            <td class="py-2 px-3">省级</td>
-                                            <td class="py-2 px-3 font-medium">1万元</td>
-                                        </tr>
-                                        <tr class="border-b">
-                                            <td class="py-2 px-3">个人</td>
-                                            <td class="py-2 px-3">市级</td>
-                                            <td class="py-2 px-3 font-medium">0.5万元</td>
-                                        </tr>
-                                        <tr class="border-b">
-                                            <td class="py-2 px-3">法人（团队）</td>
-                                            <td class="py-2 px-3">省级</td>
-                                            <td class="py-2 px-3 font-medium">2万元</td>
+                                    <tbody class="divide-y divide-gray-100">
+                                        <tr>
+                                            <td class="py-3 px-4">个人科技特派员</td>
+                                            <td class="py-3 px-4">省级</td>
+                                            <td class="py-3 px-4 font-semibold">1万元</td>
                                         </tr>
                                         <tr>
-                                            <td class="py-2 px-3">法人（团队）</td>
-                                            <td class="py-2 px-3">市级</td>
-                                            <td class="py-2 px-3 font-medium">1万元</td>
+                                            <td class="py-3 px-4">个人科技特派员</td>
+                                            <td class="py-3 px-4">市级</td>
+                                            <td class="py-3 px-4 font-semibold">0.5万元</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4">法人（团队）科技特派员</td>
+                                            <td class="py-3 px-4">省级</td>
+                                            <td class="py-3 px-4 font-semibold">2万元</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4">法人（团队）科技特派员</td>
+                                            <td class="py-3 px-4">市级</td>
+                                            <td class="py-3 px-4 font-semibold">1万元</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div>
-                        <div class="bg-white rounded-xl p-6 shadow-md mb-6">
-                            <h3 class="text-xl font-semibold mb-4 flex items-center">
-                                <i class="fa fa-cogs text-primary mr-3"></i>
-                                创新创业项目
-                            </h3>
-                            <p class="text-gray-700 mb-4">鼓励企业参与科技创新及成果转移转化，对获得市级以上科技类创新创业大赛奖项的企业：</p>
-                            <div class="p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
-                                <p class="font-semibold text-lg text-primary">按照市级奖励金额的30%给予配套奖励</p>
+                        
+                        <!-- 创新创业项目 -->
+                        <div class="bg-white rounded-2xl p-6 md:p-8 shadow-md animate-scale delay-400">
+                            <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5">
+                                <i class="fa fa-lightbulb-o text-primary text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-4 text-dark">创新创业项目支持</h3>
+                            <p class="text-gray-700 mb-6">鼓励企业积极参与科技创新及成果转移转化，对获得市级以上科技类创新创业大赛奖项的企业：</p>
+                            <div class="p-5 bg-primary/5 rounded-xl border border-primary/20 text-center">
+                                <p class="text-lg font-semibold text-primary">按市级奖励金额的30%给予配套奖励</p>
                             </div>
                         </div>
                         
-                        <div class="bg-white rounded-xl p-6 shadow-md mb-6">
-                            <h3 class="text-xl font-semibold mb-4 flex items-center">
-                                <i class="fa fa-handshake-o text-primary mr-3"></i>
-                                专业机构服务
-                            </h3>
-                            <p class="text-gray-700 mb-3">鼓励专业机构开展精准培训、辅导，推进技术转移体系建设：</p>
-                            <ul class="space-y-2 text-gray-700">
-                                <li class="flex items-center">
-                                    <span class="w-32 font-medium">国家级机构：</span>
-                                    <span class="text-accent font-semibold">20万元奖励</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <span class="w-32 font-medium">省级机构：</span>
-                                    <span class="text-accent font-semibold">10万元奖励</span>
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <div class="bg-white rounded-xl p-6 shadow-md">
-                            <h3 class="text-xl font-semibold mb-4 flex items-center">
-                                <i class="fa fa-exchange text-primary mr-3"></i>
-                                平台供需对接
-                            </h3>
-                            <p class="text-gray-700 mb-3">搭建科研院所与企业信息交流平台，深化产学研合作，借助InnoMatch平台提供：</p>
-                            <ul class="space-y-1 text-gray-700">
-                                <li class="flex items-start">
-                                    <i class="fa fa-check text-primary mt-1 mr-2"></i>
-                                    <span>科技型企业诊断服务</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <i class="fa fa-check text-primary mt-1 mr-2"></i>
-                                    <span>银行、投资机构对接</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <i class="fa fa-check text-primary mt-1 mr-2"></i>
-                                    <span>科技金融服务支持</span>
-                                </li>
-                            </ul>
+                        <!-- 专业机构与对接 -->
+                        <div class="grid grid-cols-1 gap-6">
+                            <div class="bg-white rounded-2xl p-6 shadow-md animate-scale delay-500">
+                                <h3 class="font-semibold text-dark mb-3 flex items-center">
+                                    <i class="fa fa-briefcase text-primary mr-2"></i>
+                                    专业机构服务奖励
+                                </h3>
+                                <div class="flex justify-between text-gray-700">
+                                    <div>
+                                        <p class="font-medium">国家级技术转移机构</p>
+                                        <p class="text-accent font-semibold">20万元</p>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">省级技术转移机构</p>
+                                        <p class="text-accent font-semibold">10万元</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white rounded-2xl p-6 shadow-md animate-scale delay-600">
+                                <h3 class="font-semibold text-dark mb-3 flex items-center">
+                                    <i class="fa fa-exchange text-primary mr-2"></i>
+                                    平台供需对接服务
+                                </h3>
+                                <ul class="space-y-2 text-gray-700">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                        <span>科研院所与企业信息交流平台搭建</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                        <span>规上企业、高新技术企业技术需求提炼</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                        <span>InnoMatch平台企业诊断与科技金融服务</span>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -435,109 +563,127 @@
     </div>
 
     <script>
-        // 页面滑动功能
-        document.addEventListener('DOMContentLoaded', function() {
-            const pagesContainer = document.getElementById('pagesContainer');
-            const pages = document.querySelectorAll('.page-full');
+        // 页面滚动核心逻辑
+        document.addEventListener('DOMContentLoaded', () => {
+            const scrollContainer = document.getElementById('scrollContainer');
+            const pages = document.querySelectorAll('.page');
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             const progressDots = document.querySelectorAll('.progress-dot');
-            let currentPage = 0;
+            let currentIndex = 0;
             const totalPages = pages.length;
+            let isAnimating = false;
+
+            // 初始化动画延迟类
+            document.querySelectorAll('.animate-slide-up, .animate-scale').forEach((el, index) => {
+                if (!el.classList.contains('delay-100') && !el.classList.contains('delay-200') && 
+                    !el.classList.contains('delay-300') && !el.classList.contains('delay-400') &&
+                    !el.classList.contains('delay-500') && !el.classList.contains('delay-600')) {
+                    el.classList.add('delay-100');
+                }
+            });
 
             // 更新页面显示
             function updatePage() {
-                pagesContainer.style.transform = `translateY(-${currentPage * 100}vh)`;
+                isAnimating = true;
+                scrollContainer.style.transform = `translateY(-${currentIndex * 100}vh)`;
                 
                 // 更新进度点
                 progressDots.forEach((dot, index) => {
-                    if (index === currentPage) {
-                        dot.classList.add('active', 'bg-primary');
-                        dot.classList.remove('bg-gray-300');
+                    if (index === currentIndex) {
+                        dot.classList.add('active');
                     } else {
-                        dot.classList.remove('active', 'bg-primary');
-                        dot.classList.add('bg-gray-300');
+                        dot.classList.remove('active');
                     }
                 });
                 
-                // 控制按钮显示
-                prevBtn.style.opacity = currentPage > 0 ? '1' : '0';
-                prevBtn.style.pointerEvents = currentPage > 0 ? 'auto' : 'none';
-                nextBtn.style.opacity = currentPage < totalPages - 1 ? '1' : '0';
-                nextBtn.style.pointerEvents = currentPage < totalPages - 1 ? 'auto' : 'none';
+                // 控制按钮状态
+                prevBtn.style.opacity = currentIndex > 0 ? '1' : '0';
+                prevBtn.style.pointerEvents = currentIndex > 0 ? 'auto' : 'none';
+                nextBtn.style.opacity = currentIndex < totalPages - 1 ? '1' : '0';
+                nextBtn.style.pointerEvents = currentIndex < totalPages - 1 ? 'auto' : 'none';
                 
-                // 重置动画
-                const currentPageEl = pages[currentPage];
-                const slideElements = currentPageEl.querySelectorAll('.slide-up');
-                slideElements.forEach(el => {
-                    el.style.animation = 'none';
-                    setTimeout(() => {
+                // 重置当前页动画
+                setTimeout(() => {
+                    const currentPage = pages[currentIndex];
+                    const animatedElements = currentPage.querySelectorAll('.animate-fade-in, .animate-slide-up, .animate-scale');
+                    animatedElements.forEach(el => {
+                        el.style.animation = 'none';
+                        el.offsetHeight; // 触发重绘
                         el.style.animation = '';
-                    }, 50);
-                });
+                    });
+                    isAnimating = false;
+                }, 600);
             }
 
             // 下一页
             nextBtn.addEventListener('click', () => {
-                if (currentPage < totalPages - 1) {
-                    currentPage++;
+                if (currentIndex < totalPages - 1 && !isAnimating) {
+                    currentIndex++;
                     updatePage();
                 }
             });
 
             // 上一页
             prevBtn.addEventListener('click', () => {
-                if (currentPage > 0) {
-                    currentPage--;
+                if (currentIndex > 0 && !isAnimating) {
+                    currentIndex--;
                     updatePage();
                 }
             });
 
             // 点击进度点跳转
-            progressDots.forEach((dot, index) => {
+            progressDots.forEach(dot => {
                 dot.addEventListener('click', () => {
-                    currentPage = index;
-                    updatePage();
+                    const index = parseInt(dot.dataset.index);
+                    if (index !== currentIndex && !isAnimating) {
+                        currentIndex = index;
+                        updatePage();
+                    }
                 });
             });
 
             // 滑动手势支持
-            let startY;
-            let endY;
+            let startY = 0;
+            let endY = 0;
+            let isTouching = false;
 
             document.addEventListener('touchstart', (e) => {
+                isTouching = true;
                 startY = e.touches[0].clientY;
-            }, false);
+            }, { passive: true });
 
-            document.addEventListener('touchend', (e) => {
-                endY = e.changedTouches[0].clientY;
-                handleSwipe();
-            }, false);
+            document.addEventListener('touchmove', (e) => {
+                if (!isTouching) return;
+                endY = e.touches[0].clientY;
+            }, { passive: true });
 
-            function handleSwipe() {
-                // 滑动距离超过50px才触发翻页
-                if (startY - endY > 50 && currentPage < totalPages - 1) {
-                    currentPage++;
+            document.addEventListener('touchend', () => {
+                if (!isTouching) return;
+                const diff = startY - endY;
+                
+                // 滑动距离超过50px触发翻页
+                if (diff > 50 && currentIndex < totalPages - 1 && !isAnimating) {
+                    currentIndex++;
                     updatePage();
-                } else if (endY - startY > 50 && currentPage > 0) {
-                    currentPage--;
+                } else if (diff < -50 && currentIndex > 0 && !isAnimating) {
+                    currentIndex--;
                     updatePage();
                 }
-            }
+                
+                isTouching = false;
+            });
 
-            // 键盘箭头键控制
+            // 键盘控制
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowDown' && currentPage < totalPages - 1) {
-                    currentPage++;
+                if (e.key === 'ArrowDown' && currentIndex < totalPages - 1 && !isAnimating) {
+                    currentIndex++;
                     updatePage();
-                } else if (e.key === 'ArrowUp' && currentPage > 0) {
-                    currentPage--;
+                } else if (e.key === 'ArrowUp' && currentIndex > 0 && !isAnimating) {
+                    currentIndex--;
                     updatePage();
                 }
             });
-
-            // 初始化
-            updatePage();
         });
     </script>
 </body>
